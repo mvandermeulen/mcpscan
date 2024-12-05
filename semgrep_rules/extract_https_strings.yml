@@ -12,3 +12,19 @@ rules:
           "http://$URL"
     message: "Found an HTTP URL"
     severity: INFO
+
+  - id: detect-obfuscated-python
+    languages: [python]
+    patterns:
+      - pattern: |
+          $VAR = $X + $Y + $Z + $W
+    message: "Potential obfuscated Python code detected"
+    severity: WARNING
+
+  - id: detect-obfuscated-javascript
+    languages: [javascript]
+    patterns:
+      - pattern: |
+          var $VAR = $X + $Y + $Z + $W;
+    message: "Potential obfuscated JavaScript code detected"
+    severity: WARNING
