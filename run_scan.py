@@ -13,6 +13,6 @@ def run_semgrep(clone_dir, output_file):
         subprocess.run(["semgrep", "--config", rule_file, clone_dir, "--json", "-o", output_file], check=True)
 
 if __name__ == "__main__":
-    clone_dir = "/path/to/clone/dir"  # Replace with actual clone directory
-    output_file = "/path/to/output/results.json"  # Replace with desired output file path
+    clone_dir = "./working"
+    output_file = "./working/results.json"
     run_semgrep(clone_dir, output_file)
