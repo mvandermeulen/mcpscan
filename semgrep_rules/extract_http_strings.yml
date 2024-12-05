@@ -1,0 +1,7 @@
+rules:
+  - id: extract-http-strings
+    patterns:
+      - pattern: |
+          "http://$URL"
+    message: "Found an HTTP URL"
+    severity: INFO

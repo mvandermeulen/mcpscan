@@ -1,0 +1,8 @@
+rules:
+  - id: detect-obfuscated-python
+    languages: [python]
+    patterns:
+      - pattern: |
+          $VAR = $X + $Y + $Z + $W
+    message: "Potential obfuscated Python code detected"
+    severity: WARNING

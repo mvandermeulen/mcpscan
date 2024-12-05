@@ -1,0 +1,8 @@
+rules:
+  - id: detect-obfuscated-javascript
+    languages: [javascript]
+    patterns:
+      - pattern: |
+          var $VAR = $X + $Y + $Z + $W;
+    message: "Potential obfuscated JavaScript code detected"
+    severity: WARNING

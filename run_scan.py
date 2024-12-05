@@ -2,7 +2,14 @@ import subprocess
 
 def run_semgrep(clone_dir, output_file):
     """Run semgrep on the cloned repository."""
-    subprocess.run(["semgrep", "--config", "semgrep_rules/extract_https_strings.yml", clone_dir, "--json", "-o", output_file], check=True)
+    rule_files = [
+        "semgrep_rules/extract_https_strings.yml",
+        "semgrep_rules/extract_http_strings.yml",
+        "semgrep_rules/detect_obfuscated_python.yml",
+        "semgrep_rules/detect_obfuscated_javascript.yml"
+    ]
+    for rule_file in rule_files:
+        subprocess.run(["semgrep", "--config", rule_file, clone_dir, "--json", "-o", output_file], check=True)
 
 if __name__ == "__main__":
     clone_dir = "/path/to/clone/dir"  # Replace with actual clone directory

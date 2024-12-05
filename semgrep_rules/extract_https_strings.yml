@@ -28,3 +28,10 @@ rules:
           var $VAR = $X + $Y + $Z + $W;
     message: "Potential obfuscated JavaScript code detected"
     severity: WARNING
+rules:
+  - id: extract-https-strings
+    patterns:
+      - pattern: |
+          "https://$URL"
+    message: "Found an HTTPS URL"
+    severity: INFO
