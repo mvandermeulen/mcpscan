@@ -5,3 +5,10 @@ rules:
           "https://$URL"
     message: "Found an HTTPS URL"
     severity: INFO
+
+  - id: extract-http-strings
+    patterns:
+      - pattern: |
+          "http://$URL"
+    message: "Found an HTTP URL"
+    severity: INFO
