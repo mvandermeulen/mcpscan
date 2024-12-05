@@ -9,6 +9,6 @@ def cleanup(clone_dir, output_file):
         os.remove(output_file)
 
 if __name__ == "__main__":
-    clone_dir = "/path/to/clone/dir"  # Replace with actual clone directory
+    clone_dir = "./working"
     output_file = "/path/to/output/results.json"  # Replace with actual output file path
     cleanup(clone_dir, output_file)
