@@ -1,0 +1,16 @@
+rules:
+  - id: detect-dangerous-python-code
+    languages: [python]
+    patterns:
+      - pattern: exec($CODE)
+      - pattern: eval($CODE)
+    message: "Potential dangerous Python code detected"
+    severity: ERROR
+
+  - id: detect-dangerous-javascript-code
+    languages: [javascript]
+    patterns:
+      - pattern: eval($CODE)
+      - pattern: Function($CODE)
+    message: "Potential dangerous JavaScript code detected"
+    severity: ERROR
