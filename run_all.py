@@ -22,7 +22,10 @@ def main(repo_url):
         sys.exit(1)
     finally:
         # Cleanup
-        subprocess.run(["python", "cleanup.py", clone_dir, output_file], check=True)
+        try:
+            subprocess.run(["python", "cleanup.py", clone_dir, output_file], check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Cleanup failed: {e}")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
