@@ -1,5 +1,6 @@
 rules:
   - id: extract-http-strings
+    languages: [python, javascript, typescript]
     patterns:
       - pattern: |
           "http://$URL"
