@@ -1,7 +1,7 @@
 import subprocess
 import sys
-
 import os
+import json
 
 def run_semgrep(clone_dir, output_file_name):
     results_dir = "./results"
