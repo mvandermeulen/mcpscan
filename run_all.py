@@ -9,7 +9,7 @@ import os
 
 def main(repo_url):
     clone_dir = "./working"
-    output_file = "./results.json"
+    output_file_name = "results.json"
     destination_dir = "./metrics"
 
     # Cleanup before starting
@@ -22,7 +22,7 @@ def main(repo_url):
         clone_repo(repo_url, clone_dir)
 
         # Run Semgrep scan
-        run_semgrep(clone_dir, output_file)
+        run_semgrep(clone_dir, output_file_name)
 
         # Collect metrics
         copy_metrics(output_file, destination_dir)

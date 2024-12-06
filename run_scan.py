@@ -2,7 +2,14 @@ from semgrep import semgrep_main
 import json
 import sys
 
-def run_semgrep(clone_dir, output_file):
+import os
+
+def run_semgrep(clone_dir, output_file_name):
+    """Run semgrep on the cloned repository."""
+    results_dir = "./results"
+    if not os.path.exists(results_dir):
+        os.makedirs(results_dir)
+    output_file = os.path.join(results_dir, output_file_name)
     """Run semgrep on the cloned repository."""
     rule_files = [
         "semgrep_rules/extract_https_strings.yml",

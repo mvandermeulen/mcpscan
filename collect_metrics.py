@@ -8,6 +8,6 @@ def copy_metrics(output_file, destination_dir):
     shutil.copy(output_file, destination_dir)
 
 if __name__ == "__main__":
-    output_file = "./working/results.json"
+    output_file = "./results/results.json"
     destination_dir = "./metrics"
     copy_metrics(output_file, destination_dir)

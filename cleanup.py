@@ -10,5 +10,5 @@ def cleanup(clone_dir, output_file):
 
 if __name__ == "__main__":
     clone_dir = "./working"
-    output_file = "/path/to/output/results.json"  # Replace with actual output file path
+    output_file = "./results/results.json"
     cleanup(clone_dir, output_file)
