@@ -15,11 +15,12 @@ def main(repo_url):
     except Exception as e:
         print(f"Initial cleanup failed: {e}")
         sys.exit(1)
-    # Clone the repository
-    clone_repo(repo_url, clone_dir)
+    try:
+        # Clone the repository
+        clone_repo(repo_url, clone_dir)
 
-    # Run Semgrep scan
-    run_semgrep(clone_dir, output_file_name)
+        # Run Semgrep scan
+        run_semgrep(clone_dir, output_file_name)
 
     except Exception as e:
         print(f"An error occurred: {e}")
