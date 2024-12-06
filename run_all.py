@@ -3,6 +3,7 @@ import os
 from cleanup import cleanup
 from clone_repo import clone_repo
 from run_scan import run_semgrep
+from combine_results import combine_results
 
 def main(repo_url):
     clone_dir = "./working"
@@ -12,6 +13,10 @@ def main(repo_url):
     # Cleanup before starting
     try:
         cleanup(clone_dir, output_file)
+        # Combine results
+        combined_file = "./results/combined_results.json"
+        combine_results("./results", combined_file)
+
     except Exception as e:
         print(f"Initial cleanup failed: {e}")
         sys.exit(1)
