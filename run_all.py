@@ -15,7 +15,7 @@ def main(repo_url):
     # Cleanup before starting
     try:
         cleanup(clone_dir, output_file)
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         print(f"Initial cleanup failed: {e}")
         sys.exit(1)
         # Clone the repository
@@ -27,14 +27,14 @@ def main(repo_url):
         # Collect metrics
         copy_metrics(output_file, destination_dir)
 
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         print(f"An error occurred: {e}")
         sys.exit(1)
     finally:
         # Cleanup
         try:
             cleanup(clone_dir, output_file)
-        except subprocess.CalledProcessError as e:
+        except Exception as e:
             print(f"Cleanup failed: {e}")
 
 if __name__ == "__main__":
