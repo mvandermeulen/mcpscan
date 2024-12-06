@@ -10,6 +10,7 @@ import os
 def main(repo_url):
     clone_dir = "./working"
     output_file_name = "results.json"
+    output_file = os.path.join("./results", output_file_name)
     destination_dir = "./metrics"
 
     # Cleanup before starting
