@@ -7,7 +7,6 @@ def run_semgrep(clone_dir, output_file_name):
     results_dir = "./results"
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
-    output_file = os.path.join(results_dir, output_file_name)
     """Run semgrep on the cloned repository."""
     rule_files = [
         "semgrep_rules/extract_https_strings.yml",
@@ -18,6 +17,7 @@ def run_semgrep(clone_dir, output_file_name):
     ]
     errors = []
     for rule_file in rule_files:
+        output_file = os.path.join(results_dir, f"{os.path.basename(rule_file).replace('.yml', '')}_{output_file_name}")
         try:
             subprocess.run([
                 "semgrep", 
