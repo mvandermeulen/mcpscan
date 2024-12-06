@@ -1,4 +1,9 @@
-import subprocess
+import sys
+import os
+from cleanup import cleanup
+from clone_repo import clone_repo
+from run_scan import run_semgrep
+from collect_metrics import copy_metrics
 import sys
 import os
 
@@ -9,18 +14,18 @@ def main(repo_url):
 
     # Cleanup before starting
     try:
-        subprocess.run(["python", "cleanup.py", clone_dir, output_file], check=True)
+        cleanup(clone_dir, output_file)
     except subprocess.CalledProcessError as e:
         print(f"Initial cleanup failed: {e}")
         sys.exit(1)
         # Clone the repository
-        subprocess.run(["python", "clone_repo.py", repo_url], check=True)
+        clone_repo(repo_url, clone_dir)
 
         # Run Semgrep scan
-        subprocess.run(["python", "run_scan.py", clone_dir, output_file], check=True)
+        run_semgrep(clone_dir, output_file)
 
         # Collect metrics
-        subprocess.run(["python", "collect_metrics.py", output_file, destination_dir], check=True)
+        copy_metrics(output_file, destination_dir)
 
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
@@ -28,7 +33,7 @@ def main(repo_url):
     finally:
         # Cleanup
         try:
-            subprocess.run(["python", "cleanup.py", clone_dir, output_file], check=True)
+            cleanup(clone_dir, output_file)
         except subprocess.CalledProcessError as e:
             print(f"Cleanup failed: {e}")
 
