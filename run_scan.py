@@ -1,11 +1,9 @@
-from semgrep import semgrep_main
-import json
+import subprocess
 import sys
 
 import os
 
 def run_semgrep(clone_dir, output_file_name):
-    """Run semgrep on the cloned repository."""
     results_dir = "./results"
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
@@ -21,7 +19,13 @@ def run_semgrep(clone_dir, output_file_name):
     errors = []
     for rule_file in rule_files:
         try:
-            semgrep_main.main(["--config", rule_file, clone_dir, "--json", "-o", output_file])
+            subprocess.run([
+                "semgrep", 
+                "--config", rule_file, 
+                clone_dir, 
+                "--json", 
+                "-o", output_file
+            ], check=True)
         except Exception as e:
             errors.append(f"Error running Semgrep with {rule_file}: {e}")
 
