@@ -3,7 +3,6 @@ import os
 from cleanup import cleanup
 from clone_repo import clone_repo
 from run_scan import run_semgrep
-from collect_metrics import copy_metrics
 import sys
 import os
 
@@ -11,7 +10,6 @@ def main(repo_url):
     clone_dir = "./working"
     output_file_name = "results.json"
     output_file = os.path.join("./results", output_file_name)
-    destination_dir = "./metrics"
 
     # Cleanup before starting
     try:
@@ -25,8 +23,6 @@ def main(repo_url):
         # Run Semgrep scan
         run_semgrep(clone_dir, output_file_name)
 
-        # Collect metrics
-        copy_metrics(output_file, destination_dir)
 
     except Exception as e:
         print(f"An error occurred: {e}")
