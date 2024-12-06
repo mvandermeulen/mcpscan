@@ -7,7 +7,12 @@ def main(repo_url):
     output_file = "./results.json"
     destination_dir = "./metrics"
 
+    # Cleanup before starting
     try:
+        subprocess.run(["python", "cleanup.py", clone_dir, output_file], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Initial cleanup failed: {e}")
+        sys.exit(1)
         # Clone the repository
         subprocess.run(["python", "clone_repo.py", repo_url], check=True)
 
