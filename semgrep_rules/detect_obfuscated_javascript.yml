@@ -2,7 +2,8 @@ rules:
   - id: detect-obfuscated-javascript
     languages: [javascript]
     patterns:
-      - pattern: |
-          var $VAR = $X + $Y + $Z + $W;
+      - pattern: var $VAR = $X + $Y + $Z + $W;
+      - pattern: base64.b64decode($DATA)
+      - pattern: exec(bytes.fromhex($CODE))
     message: "Potential obfuscated JavaScript code detected"
     severity: WARNING

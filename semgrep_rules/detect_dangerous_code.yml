@@ -4,6 +4,7 @@ rules:
     patterns:
       - pattern: exec($CODE)
       - pattern: eval($CODE)
+      - pattern: os.system($COMMAND)
     message: "Potential dangerous Python code detected"
     severity: ERROR
 
@@ -12,5 +13,6 @@ rules:
     patterns:
       - pattern: eval($CODE)
       - pattern: Function($CODE)
+      - pattern: child_process.exec($COMMAND)
     message: "Potential dangerous JavaScript code detected"
     severity: ERROR
