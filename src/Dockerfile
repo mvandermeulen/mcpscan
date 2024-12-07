@@ -5,10 +5,10 @@ FROM node:latest
 WORKDIR /app
 
 # Copy the requirements.txt file into the container
-COPY requirements.txt /app/
+#COPY docker/requirements.txt /app/
 
 # Copy the src directory contents into the container at /app/src
-COPY src/ /app
+COPY docker/ /app
 
 RUN apt update && apt install -y python3.11 python3-pip python-is-python3 python3.11-venv
 
@@ -20,6 +20,8 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install pip-audit
+RUN npm install -g npm-audit
 
 # Run run_all.py when the container launches
 CMD ["python3", "run_all.py"]
