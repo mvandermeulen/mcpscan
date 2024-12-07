@@ -17,11 +17,13 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
+RUN pip install uv 
+
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install pip-audit
-RUN npm install -g npm-audit
+RUN npm install -g  npm-audit
 
 # Run run_all.py when the container launches
 CMD ["python3", "run_all.py"]
