@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.9-slim
+FROM node:14-slim
 
 # Install git and Node.js
 RUN apt-get update && apt-get install -y git curl && \
