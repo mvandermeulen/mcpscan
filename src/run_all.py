@@ -31,6 +31,7 @@ def main(repo_url):
 
     except Exception as e:
         print(f"An error occurred: {e}")
+        print(e)
         sys.exit(1)
     finally:
         # Cleanup
