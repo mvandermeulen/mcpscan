@@ -1,14 +1,16 @@
 import sys
 import os
-from src.cleanup import cleanup
-from src.clone_repo import clone_repo
-from src.run_scan import run_semgrep
-from src.combine_results import combine_results
+import datetime
+from cleanup import cleanup
+from clone_repo import clone_repo
+from run_scan import run_semgrep
+from combine_results import combine_results
 
 def main(repo_url):
     clone_dir = "./working"
+    results_dir = "./results"
     output_file_name = "results.json"
-    output_file = os.path.join("./results", output_file_name)
+    output_file = os.path.join(results_dir, output_file_name)
 
     # Cleanup before starting
     try:
@@ -23,6 +25,9 @@ def main(repo_url):
 
         # Run Semgrep scan
         run_semgrep(clone_dir, output_file_name)
+        repo_name = repo_url.split('/')[-1]
+        timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        combine_results(results_dir, f"{repo_name}_{timestamp}.json")
 
     except Exception as e:
         print(f"An error occurred: {e}")

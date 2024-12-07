@@ -13,9 +13,6 @@ COPY requirements.txt /app/
 # Copy the src directory contents into the container at /app/src
 COPY src/ /app
 
-# Copy the semgrep_rules directory into the container
-COPY semgrep_rules/ /app/semgrep_rules
-
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
