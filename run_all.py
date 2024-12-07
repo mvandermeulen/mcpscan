@@ -12,10 +12,7 @@ def main(repo_url):
 
     # Cleanup before starting
     try:
-        cleanup(clone_dir, output_file)
-        # Combine results
-        combined_file = "./results/combined_results.json"
-        combine_results("./results", combined_file)
+        cleanup(clone_dir)
 
     except Exception as e:
         print(f"Initial cleanup failed: {e}")
@@ -33,7 +30,7 @@ def main(repo_url):
     finally:
         # Cleanup
         try:
-            cleanup(clone_dir, output_file)
+            cleanup(clone_dir)
         except Exception as e:
             print(f"Cleanup failed: {e}")
 
