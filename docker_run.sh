@@ -4,4 +4,4 @@
 docker build -t semgrep-runner .
 
 # Run the Docker container
-docker run --rm -v "$(pwd)/results:/app/results" semgrep-runner "$@"
+docker run --rm -v "$(pwd)/results:/app/results" semgrep-runner python /app/src/run_all.py "$@"

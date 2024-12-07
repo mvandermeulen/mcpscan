@@ -1,9 +1,9 @@
 import sys
 import os
-from cleanup import cleanup
-from clone_repo import clone_repo
-from run_scan import run_semgrep
-from combine_results import combine_results
+from src.cleanup import cleanup
+from src.clone_repo import clone_repo
+from src.run_scan import run_semgrep
+from src.combine_results import combine_results
 
 def main(repo_url):
     clone_dir = "./working"
