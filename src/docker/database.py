@@ -3,7 +3,7 @@ import hashlib
 
 def initialize_database(db_path='./database'):
     """Initialize the database if it does not exist."""
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect('./database')
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS plugins (
@@ -17,9 +17,9 @@ def initialize_database(db_path='./database'):
 
 initialize_database('plugins.db')
 
-def add_plugin_record(plugin_name, plugin_hash, db_path='./database'):
+def add_plugin_record(plugin_name, plugin_hash):
     """Add a new record for a plugin."""
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect('./database')
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS plugins (
@@ -34,7 +34,7 @@ def add_plugin_record(plugin_name, plugin_hash, db_path='./database'):
     conn.commit()
     conn.close()
 
-def has_plugin_hash_changed(plugin_name, current_hash, db_path='./database'):
+def has_plugin_hash_changed(plugin_name, current_hash):
     """Check if the current hash of a plugin has changed."""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
