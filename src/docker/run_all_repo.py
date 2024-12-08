@@ -34,9 +34,10 @@ def main(repo_url):
         if not plugin_record:
             # Add the plugin record if it doesn't exist
             add_plugin_record(plugin_name=repo_url, plugin_hash=repo_hash)
-
-        # Compare the hash and only continue if the hash has changed
-        existing_hash = plugin_record[0]
+            existing_hash = None
+        else:
+            existing_hash = plugin_record[0]
+        
         if existing_hash != repo_hash:
             add_plugin_record(plugin_name=repo_url, plugin_hash=repo_hash)
             run_semgrep(clone_dir, output_file_name)
