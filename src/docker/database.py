@@ -36,7 +36,7 @@ def add_plugin_record(plugin_name, plugin_hash):
 
 def has_plugin_hash_changed(plugin_name, current_hash):
     """Check if the current hash of a plugin has changed."""
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect('./database')
     cursor = conn.cursor()
     cursor.execute('''
         SELECT hash FROM plugins WHERE name = ?
