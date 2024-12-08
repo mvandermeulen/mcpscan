@@ -32,11 +32,12 @@ def run_database_command(command, params=(), fetch=False):
 
 initialize_database(db_path)
 
-def add_plugin_record(plugin_name, plugin_hash):
+def add_plugin_record(plugin_name, plugin_hash, url=None, command=None, description=None, source_url=None, vendor=None, license=None, runtime=None):
     """Add a new record for a plugin."""
     run_database_command('''
-        INSERT INTO plugins (name, hash) VALUES (?, ?)
-    ''', (plugin_name, plugin_hash))
+        INSERT INTO plugins (name, hash, url, command, description, source_url, vendor, license, runtime) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (plugin_name, plugin_hash, url, command, description, source_url, vendor, license, runtime))
 
 def has_plugin_hash_changed(plugin_name, current_hash):
     """Check if the current hash of a plugin has changed."""
