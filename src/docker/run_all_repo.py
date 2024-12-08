@@ -4,7 +4,7 @@ import datetime
 from cleanup import cleanup
 from database import add_plugin_record, get_plugin_and_hash
 import hashlib
-from clone_repo import clone_repo
+from repo import clone_repo, get_latest_commit_hash
 from run_scan import run_semgrep
 from combine_results import combine_results
 
@@ -25,8 +25,8 @@ def main(repo_url):
         # Clone the repository
         clone_repo(repo_url, clone_dir)
 
-        # Calculate the hash of the repository
-        repo_hash = hashlib.sha256(repo_url.encode()).hexdigest()
+        # Get the latest commit hash of the repository
+        repo_hash = get_latest_commit_hash(clone_dir)
 
         # Retrieve the plugin record and its hash
         plugin_record = get_plugin_and_hash(repo_url)
