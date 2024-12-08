@@ -24,13 +24,6 @@ def add_plugin_record(plugin_name, plugin_hash):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS plugins (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            hash TEXT NOT NULL
-        )
-    ''')
-    cursor.execute('''
         INSERT INTO plugins (name, hash) VALUES (?, ?)
     ''', (plugin_name, plugin_hash))
     conn.commit()
@@ -48,6 +41,5 @@ def has_plugin_hash_changed(plugin_name, current_hash):
     if row is None:
         return True
     return row[0] != current_hash
-if __name__ == "__main__":
-    db_path = './database'
-    initialize_database(db_path)
+
+
