@@ -13,6 +13,8 @@ COPY docker/ /app
 RUN apt update && apt install -y python3.11 python3-pip python-is-python3 python3.11-venv
 
 
+ENV SUPABASE_URL=<your_supabase_url>
+ENV SUPABASE_KEY=<your_supabase_key>
 ENV VIRTUAL_ENV=/opt/venv
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
