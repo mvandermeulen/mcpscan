@@ -17,7 +17,7 @@ def initialize_database(db_path='./database'):
 
 initialize_database('plugins.db')
 
-def add_plugin_record(db_path='./database', plugin_name, plugin_hash):
+def add_plugin_record(plugin_name, plugin_hash, db_path='./database'):
     """Add a new record for a plugin."""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -34,7 +34,7 @@ def add_plugin_record(db_path='./database', plugin_name, plugin_hash):
     conn.commit()
     conn.close()
 
-def has_plugin_hash_changed(db_path='./database', plugin_name, current_hash):
+def has_plugin_hash_changed(plugin_name, current_hash, db_path='./database'):
     """Check if the current hash of a plugin has changed."""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
