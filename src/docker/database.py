@@ -5,15 +5,13 @@ db_path = './database'
 
 def initialize_database(db_path=db_path):
     """Initialize the database if it does not exist."""
-    result = run_database_command('''
+    run_database_command('''
         CREATE TABLE IF NOT EXISTS plugins (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             hash TEXT NOT NULL
         )
     ''')
-    conn.commit()
-    conn.close()
 
 def run_database_command(command, params=(), fetch=False):
     """Execute a database command with optional parameters and fetch results if needed."""
@@ -35,9 +33,7 @@ def add_plugin_record(plugin_name, plugin_hash):
 
 def has_plugin_hash_changed(plugin_name, current_hash):
     """Check if the current hash of a plugin has changed."""
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    cursor.execute('''
+    result = run_database_command('''
         SELECT hash FROM plugins WHERE name = ?
     ''', (plugin_name,))
     row = result[0] if result else None
