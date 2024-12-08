@@ -17,7 +17,7 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-RUN pip install uv 
+RUN pip install uv supabase
 
 
 # Install any needed packages specified in requirements.txt
