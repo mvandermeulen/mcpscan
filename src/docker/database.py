@@ -9,7 +9,14 @@ def initialize_database(db_path=db_path):
         CREATE TABLE IF NOT EXISTS plugins (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            hash TEXT NOT NULL
+            hash TEXT NOT NULL,
+            url TEXT,
+            command TEXT,
+            description TEXT,
+            source_url TEXT,
+            vendor TEXT,
+            license TEXT,
+            runtime TEXT
         )
     ''')
 
