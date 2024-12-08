@@ -39,14 +39,11 @@ def add_plugin_record(plugin_name, plugin_hash, url=None, command=None, descript
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     ''', (plugin_name, plugin_hash, url, command, description, source_url, vendor, license, runtime))
 
-def has_plugin_hash_changed(plugin_name, current_hash):
-    """Check if the current hash of a plugin has changed."""
+def get_plugin_and_hash(plugin_name):
+    """Retrieve the plugin record and its hash."""
     result = run_database_command('''
         SELECT hash FROM plugins WHERE name = ?
     ''', (plugin_name,))
-    row = result[0] if result else None
-    if not row:
-        return True
-    return row[0] != current_hash
+    return result[0] if result else None
 
 
