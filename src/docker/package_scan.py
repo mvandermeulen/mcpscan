@@ -30,9 +30,20 @@ def detect_project_type(working_dir):
         if os.path.exists(os.path.join(working_dir, file)):
             return 'python'
             
-    # Check for JavaScript project
-    if os.path.exists(os.path.join(working_dir, 'package.json')):
-        return 'javascript'
+    # JavaScript/Node.js project indicators
+    js_files = [
+        'package.json',
+        'package-lock.json',
+        'yarn.lock',
+        'pnpm-lock.yaml',
+        'bower.json',
+        'npm-shrinkwrap.json'
+    ]
+    
+    # Check for JavaScript project indicators
+    for file in js_files:
+        if os.path.exists(os.path.join(working_dir, file)):
+            return 'javascript'
         
     return None
 
