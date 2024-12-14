@@ -48,10 +48,10 @@ A specialized security scanning tool for Model Context Protocol (MCP) servers. M
 
 Example:
 ```bash
-./src/docker_run_one.sh https://github.com/username/repository
+./src/docker_run_one.sh "https://github.com/modelcontextprotocol/servers"
 ```
 
-### Scanning Multiple MCP Servers
+### Scanning All Servers in the MCP Get repo
 
 ```bash
 python3 src/docker_run_mcp_get.py
