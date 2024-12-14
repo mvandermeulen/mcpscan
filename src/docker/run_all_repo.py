@@ -29,12 +29,15 @@ def main(repo_url):
         clone_repo(repo_url, clone_dir)
 
         # Run semgrep and package scanning
+        logging.info("Running scans...")
         run_semgrep(clone_dir, output_file_name)
+        logging.info("Running package scans...")
         package_scan(clone_dir, results_dir)
         
         # Combine results
         repo_name = repo_url.split('/')[-1]
         timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        logging.info("Combining results...")
         combine_results(results_dir, f"{repo_name}_{timestamp}.json")
 
     except Exception as e:
