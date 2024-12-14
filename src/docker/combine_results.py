@@ -2,12 +2,9 @@ import os
 import json
 import logging
 from datetime import datetime
+from log_config import setup_logging
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+setup_logging()
 
 def combine_results(results_dir, combined_file):
     """Combine all JSON results into a single file."""

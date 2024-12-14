@@ -2,6 +2,10 @@ import os
 import subprocess
 import json
 from datetime import datetime
+import logging
+from log_config import setup_logging
+
+setup_logging()
 
 def detect_project_type(working_dir):
     """
@@ -64,7 +68,7 @@ def scan(working_dir="./working", output_dir="./results"):
     # Detect project type
     project_type = detect_project_type(working_dir)
     if not project_type:
-        print(f"No recognizable project files found in {working_dir}")
+        logging.warning(f"No recognizable project files found in {working_dir}")
         return None
         
     # Generate output filename
@@ -73,7 +77,7 @@ def scan(working_dir="./working", output_dir="./results"):
     
     try:
         if project_type == 'javascript':
-            print("Detected JavaScript project, running npm audit...")
+            logging.info("Detected JavaScript project, running npm audit...")
             result = subprocess.run(
                 ["npm", "audit", "--json"],
                 cwd=working_dir,
@@ -82,7 +86,7 @@ def scan(working_dir="./working", output_dir="./results"):
                 check=False
             )
         else:  # python
-            print("Detected Python project, running pip-audit...")
+            logging.info("Detected Python project, running pip-audit...")
             # Install pip-audit if not already installed
             subprocess.run(["pip", "install", "pip-audit"], check=True, capture_output=True)
             result = subprocess.run(
@@ -104,11 +108,11 @@ def scan(working_dir="./working", output_dir="./results"):
             else:
                 json.dump({"error": result.stderr}, f, indent=2)
                 
-        print(f"Scan completed. Results saved to: {output_file}")
+        logging.info(f"Scan completed. Results saved to: {output_file}")
         return output_file
         
     except subprocess.CalledProcessError as e:
-        print(f"Error scanning repository in {working_dir}: {str(e)}")
+        logging.error(f"Error scanning repository in {working_dir}: {str(e)}")
         return None
 
 if __name__ == "__main__":

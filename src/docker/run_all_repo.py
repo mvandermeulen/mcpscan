@@ -1,6 +1,10 @@
 import sys
 import os
 import datetime
+import logging
+from log_config import setup_logging
+
+setup_logging()
 from cleanup import cleanup
 from repo import clone_repo
 from run_scan import run_semgrep
@@ -18,7 +22,7 @@ def main(repo_url):
         cleanup(clone_dir)
 
     except Exception as e:
-        print(f"Initial cleanup failed: {e}")
+        logging.error(f"Initial cleanup failed: {e}")
         sys.exit(1)
     try:
         # Clone the repository
@@ -34,19 +38,19 @@ def main(repo_url):
         combine_results(results_dir, f"{repo_name}_{timestamp}.json")
 
     except Exception as e:
-        print(f"An error occurred: {e}")
-        print(e)
+        logging.error(f"An error occurred: {e}")
+        logging.error(str(e))
         sys.exit(1)
     finally:
         # Cleanup
         try:
             cleanup(clone_dir)
         except Exception as e:
-            print(f"Cleanup failed: {e}")
+            logging.error(f"Cleanup failed: {e}")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python run_all.py <repo_url>")
+        logging.error("Usage: python run_all.py <repo_url>")
         sys.exit(1)
     repo_url = sys.argv[1]
     main(repo_url)

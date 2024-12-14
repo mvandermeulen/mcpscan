@@ -2,6 +2,10 @@ import subprocess
 import sys
 import os
 import json
+import logging
+from log_config import setup_logging
+
+setup_logging()
 
 def run_semgrep(clone_dir, output_file_name):
     results_dir = "./results"
@@ -26,7 +30,9 @@ def run_semgrep(clone_dir, output_file_name):
                 "-o", output_file
             ], check=True)
         except Exception as e:
-            errors.append(f"Error running Semgrep with {rule_file}: {e}")
+            error_msg = f"Error running Semgrep with {rule_file}: {e}"
+            logging.error(error_msg)
+            errors.append(error_msg)
 
     if errors:
         with open(output_file, "a") as f:
