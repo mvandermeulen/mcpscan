@@ -37,7 +37,6 @@ def run_semgrep(clone_dir, output_file_name):
     if errors:
         with open(output_file, "a") as f:
             json.dump({"errors": errors}, f, indent=2)
-        sys.exit(1)
 
 if __name__ == "__main__":
     clone_dir = "./working"
