@@ -7,14 +7,14 @@ def run_semgrep(clone_dir, output_file_name):
     results_dir = "./results"
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
-    """Run semgrep on the cloned repository."""
-    rule_files = [
-        "semgrep_rules/extract_https_strings.yml",
-        "semgrep_rules/extract_http_strings.yml",
-        "semgrep_rules/detect_obfuscated_code.yml",
-        "semgrep_rules/detect_dangerous_code.yml"
-    ]
+    """Run semgrep on the cloned repository using all YAML rules."""
+    rules_dir = "semgrep_rules"
     errors = []
+    
+    # Get all YAML files from the rules directory
+    rule_files = [os.path.join(rules_dir, f) for f in os.listdir(rules_dir) 
+                 if f.endswith('.yml') or f.endswith('.yaml')]
+    
     for rule_file in rule_files:
         output_file = os.path.join(results_dir, f"{os.path.basename(rule_file).replace('.yml', '')}_{output_file_name}")
         try:
