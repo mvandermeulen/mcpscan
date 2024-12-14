@@ -108,11 +108,7 @@ This project is licensed under the Mozilla Public License Version 2.0. See the [
 
 ## TODO
 
-- [ ] Add support for scanning MCP server configuration files
-- [ ] Implement custom Semgrep rules specific to MCP protocol security
-- [ ] Add validation of MCP protocol compliance
-- [ ] Create detailed reporting of MCP-specific security concerns
-- [ ] Add automated testing suite
-- [ ] Implement severity scoring for MCP-specific vulnerabilities
-- [ ] Add support for scanning MCP client implementations
-- [ ] Create documentation for adding custom MCP security rules
+- [ ] Reduce the output jsons to a single representation
+- [ ] Add support for go
+- [ ] Add result caching, store last tested hash for a repo
+- [ ] More tests and scans
