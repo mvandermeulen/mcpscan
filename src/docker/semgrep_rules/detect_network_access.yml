@@ -1,0 +1,20 @@
+rules:
+  - id: detect-network-binding
+    pattern-either:
+      - pattern: socket.bind(("0.0.0.0", ...))
+      - pattern: socket.bind(("localhost", ...))
+      - pattern: listen("0.0.0.0", ...)
+      - pattern: listen("localhost", ...)
+    message: "Detected network binding - verify this is not exposing services unintentionally"
+    languages: [python, javascript]
+    severity: WARNING
+
+  - id: detect-process-execution
+    pattern-either:
+      - pattern: exec("...")
+      - pattern: spawn("...")
+      - pattern: child_process.exec("...")
+      - pattern: child_process.spawn("...")
+    message: "Detected process execution - verify command injection is not possible"
+    languages: [javascript]
+    severity: WARNING
