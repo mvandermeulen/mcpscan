@@ -13,12 +13,27 @@ def detect_project_type(working_dir):
     Returns:
         str: 'python', 'javascript', or None
     """
-    # Check for Python project indicators
-    if os.path.exists(os.path.join(working_dir, 'requirements.txt')) or \
-       os.path.exists(os.path.join(working_dir, 'pyproject.toml')):
-        return 'python'
-    elif os.path.exists(os.path.join(working_dir, 'package.json')):
+    # Python project indicators
+    python_files = [
+        'requirements.txt',
+        'pyproject.toml',
+        'setup.py',
+        'Pipfile',
+        'setup.cfg',
+        'environment.yml',
+        'conda.yaml',
+        'poetry.lock'
+    ]
+    
+    # Check for any Python project indicators
+    for file in python_files:
+        if os.path.exists(os.path.join(working_dir, file)):
+            return 'python'
+            
+    # Check for JavaScript project
+    if os.path.exists(os.path.join(working_dir, 'package.json')):
         return 'javascript'
+        
     return None
 
 def scan(working_dir="./working", output_dir="./results"):
