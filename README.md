@@ -100,7 +100,7 @@ This project relies on:
 
 ## License
 
-[Add your license information here]
+This project is licensed under the Mozilla Public License Version 2.0. See the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
