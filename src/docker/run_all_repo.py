@@ -5,6 +5,7 @@ from cleanup import cleanup
 from repo import clone_repo
 from run_scan import run_semgrep
 from combine_results import combine_results
+from package_scan import scan as package_scan
 
 def main(repo_url):
     clone_dir = "./working"
@@ -23,8 +24,11 @@ def main(repo_url):
         # Clone the repository
         clone_repo(repo_url, clone_dir)
 
-        # Run semgrep and combine results
+        # Run semgrep and package scanning
         run_semgrep(clone_dir, output_file_name)
+        package_scan(clone_dir, results_dir)
+        
+        # Combine results
         repo_name = repo_url.split('/')[-1]
         timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         combine_results(results_dir, f"{repo_name}_{timestamp}.json")
