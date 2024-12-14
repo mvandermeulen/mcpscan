@@ -13,7 +13,9 @@ def detect_project_type(working_dir):
     Returns:
         str: 'python', 'javascript', or None
     """
-    if os.path.exists(os.path.join(working_dir, 'requirements.txt')):
+    # Check for Python project indicators
+    if os.path.exists(os.path.join(working_dir, 'requirements.txt')) or \
+       os.path.exists(os.path.join(working_dir, 'pyproject.toml')):
         return 'python'
     elif os.path.exists(os.path.join(working_dir, 'package.json')):
         return 'javascript'
