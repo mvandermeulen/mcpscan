@@ -69,7 +69,7 @@ def scan(working_dir="./working", output_dir="./results"):
         
     # Generate output filename
     repo_name = os.path.basename(os.path.abspath(working_dir))
-    output_file = os.path.join(output_dir, f"scan_{repo_name}.json")
+    output_file = os.path.join(output_dir, f"package_scan_{repo_name}.json")
     
     try:
         if project_type == 'javascript':
