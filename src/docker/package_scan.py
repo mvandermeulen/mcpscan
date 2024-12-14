@@ -67,10 +67,9 @@ def scan(working_dir="./working", output_dir="./results"):
         print(f"No recognizable project files found in {working_dir}")
         return None
         
-    # Generate unique filename with timestamp
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    # Generate output filename
     repo_name = os.path.basename(os.path.abspath(working_dir))
-    output_file = os.path.join(output_dir, f"scan_{repo_name}_{timestamp}.json")
+    output_file = os.path.join(output_dir, f"scan_{repo_name}.json")
     
     try:
         if project_type == 'javascript':
