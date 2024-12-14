@@ -9,8 +9,7 @@ def combine_results(results_dir, combined_file):
             if filename == "combined_results.json" or filename == combined_file:
                 print(f"Skipping {filename}")
                 continue
-            print(filename)
-            print(combined_file)
+
             with open(os.path.join(results_dir, filename), 'r') as f:
                 data = json.load(f)
                 rulename = filename.replace(".json", '')
