@@ -2,7 +2,7 @@ import sys
 import os
 import datetime
 from cleanup import cleanup
-from repo import clone_repo, get_latest_commit_hash
+from repo import clone_repo
 from run_scan import run_semgrep
 from combine_results import combine_results
 
@@ -22,9 +22,6 @@ def main(repo_url):
     try:
         # Clone the repository
         clone_repo(repo_url, clone_dir)
-
-        # Get the latest commit hash of the repository
-        repo_hash = get_latest_commit_hash(clone_dir)
 
         # Run semgrep and combine results
         run_semgrep(clone_dir, output_file_name)
