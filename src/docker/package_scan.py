@@ -3,9 +3,25 @@ import subprocess
 import json
 from datetime import datetime
 
+def detect_project_type(working_dir):
+    """
+    Detect if the project is Python or JavaScript
+    
+    Args:
+        working_dir (str): Directory to check
+        
+    Returns:
+        str: 'python', 'javascript', or None
+    """
+    if os.path.exists(os.path.join(working_dir, 'requirements.txt')):
+        return 'python'
+    elif os.path.exists(os.path.join(working_dir, 'package.json')):
+        return 'javascript'
+    return None
+
 def scan(working_dir="./working", output_dir="./results"):
     """
-    Scan a cloned repository for npm package security vulnerabilities and save results
+    Scan a cloned repository for security vulnerabilities using appropriate tool
     
     Args:
         working_dir (str): Directory containing the cloned repository
@@ -17,30 +33,47 @@ def scan(working_dir="./working", output_dir="./results"):
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
     
-    # Check if package.json exists
-    if not os.path.exists(os.path.join(working_dir, 'package.json')):
-        print(f"No package.json found in {working_dir}")
+    # Detect project type
+    project_type = detect_project_type(working_dir)
+    if not project_type:
+        print(f"No recognizable project files found in {working_dir}")
         return None
-
+        
     # Generate unique filename with timestamp
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     repo_name = os.path.basename(os.path.abspath(working_dir))
     output_file = os.path.join(output_dir, f"scan_{repo_name}_{timestamp}.json")
     
-    # Run npm audit in the working directory
     try:
-        result = subprocess.run(
-            ["npm", "audit", "--json"],
-            cwd=working_dir,
-            capture_output=True,
-            text=True,
-            check=False  # Don't raise exception on audit findings
-        )
+        if project_type == 'javascript':
+            print("Detected JavaScript project, running npm audit...")
+            result = subprocess.run(
+                ["npm", "audit", "--json"],
+                cwd=working_dir,
+                capture_output=True,
+                text=True,
+                check=False
+            )
+        else:  # python
+            print("Detected Python project, running pip-audit...")
+            # Install pip-audit if not already installed
+            subprocess.run(["pip", "install", "pip-audit"], check=True, capture_output=True)
+            result = subprocess.run(
+                ["pip-audit", "--format", "json"],
+                cwd=working_dir,
+                capture_output=True,
+                text=True,
+                check=False
+            )
         
         # Save results
         with open(output_file, 'w') as f:
             if result.stdout:
-                json.dump(json.loads(result.stdout), f, indent=2)
+                try:
+                    json.dump(json.loads(result.stdout), f, indent=2)
+                except json.JSONDecodeError:
+                    # If output isn't JSON, save as-is in a JSON wrapper
+                    json.dump({"output": result.stdout}, f, indent=2)
             else:
                 json.dump({"error": result.stderr}, f, indent=2)
                 
