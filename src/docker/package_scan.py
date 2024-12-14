@@ -3,12 +3,12 @@ import subprocess
 import json
 from datetime import datetime
 
-def scan(package_name, output_dir="./results"):
+def scan(working_dir="./working", output_dir="./results"):
     """
-    Scan a package for security vulnerabilities and save results
+    Scan a cloned repository for npm package security vulnerabilities and save results
     
     Args:
-        package_name (str): Name of the package to scan
+        working_dir (str): Directory containing the cloned repository
         output_dir (str): Directory to save scan results
     
     Returns:
@@ -17,14 +17,21 @@ def scan(package_name, output_dir="./results"):
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
     
+    # Check if package.json exists
+    if not os.path.exists(os.path.join(working_dir, 'package.json')):
+        print(f"No package.json found in {working_dir}")
+        return None
+
     # Generate unique filename with timestamp
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    output_file = os.path.join(output_dir, f"scan_{package_name}_{timestamp}.json")
+    repo_name = os.path.basename(os.path.abspath(working_dir))
+    output_file = os.path.join(output_dir, f"scan_{repo_name}_{timestamp}.json")
     
-    # Run npm audit
+    # Run npm audit in the working directory
     try:
         result = subprocess.run(
-            ["npm", "audit", "--json", package_name],
+            ["npm", "audit", "--json"],
+            cwd=working_dir,
             capture_output=True,
             text=True,
             check=False  # Don't raise exception on audit findings
@@ -41,12 +48,10 @@ def scan(package_name, output_dir="./results"):
         return output_file
         
     except subprocess.CalledProcessError as e:
-        print(f"Error scanning package {package_name}: {str(e)}")
+        print(f"Error scanning repository in {working_dir}: {str(e)}")
         return None
 
 if __name__ == "__main__":
     import sys
-    if len(sys.argv) != 2:
-        print("Usage: python package_scan.py <package_name>")
-        sys.exit(1)
-    scan(sys.argv[1])
+    working_dir = sys.argv[1] if len(sys.argv) > 1 else "./working"
+    scan(working_dir)
