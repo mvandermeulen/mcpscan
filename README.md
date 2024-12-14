@@ -1,25 +1,25 @@
-# Repository Security Scanner
+# MCPScan
 
-A Docker-based security scanning tool that analyzes Git repositories for potential security issues using multiple scanning tools:
+A specialized security scanning tool for Model Context Protocol (MCP) servers. MCPScan performs comprehensive security analysis of MCP server implementations using multiple scanning tools:
 - Semgrep for code pattern analysis
 - npm audit for JavaScript/Node.js dependencies
 - pip-audit for Python dependencies
 
 ## Features
 
-- Automated repository cloning and scanning
-- Multi-tool security analysis:
+- Automated MCP server repository cloning and scanning
+- Multi-tool security analysis tailored for MCP servers:
   - Static code analysis with Semgrep rules for:
-    - Dangerous code patterns
-    - Local file access
-    - Network access
-    - Obfuscated code
-    - Process execution
-    - HTTP/HTTPS strings
+    - Dangerous code patterns that could compromise model context
+    - Local file access vulnerabilities
+    - Network access security
+    - Obfuscated code detection
+    - Process execution monitoring
+    - HTTP/HTTPS endpoint analysis
   - Dependency vulnerability scanning:
     - Python package vulnerabilities via pip-audit
     - JavaScript package vulnerabilities via npm audit
-- Automatic project type detection (Python/JavaScript)
+- Automatic MCP server framework detection
 - Results aggregation and reporting in JSON format
 - Docker containerization for isolated scanning
 - Automatic cleanup of temporary files
@@ -51,17 +51,17 @@ Example:
 ./src/docker_run_one.sh https://github.com/username/repository
 ```
 
-### Scanning Multiple Repositories from MCP-Get
+### Scanning Multiple MCP Servers
 
 ```bash
 python3 src/docker_run_mcp_get.py
 ```
 
 This will:
-1. Fetch the package list from MCP-Get
-2. Clone each repository
-3. Run security scans
-4. Save results to the `results` directory
+1. Fetch the MCP server list from MCP-Get
+2. Clone each MCP server repository
+3. Run comprehensive security scans
+4. Save detailed analysis to the `results` directory
 
 ## Output
 
