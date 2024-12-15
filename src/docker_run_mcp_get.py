@@ -10,12 +10,6 @@ import shutil
 
 from docker.config import COMBINED_DIR
 
-def cleanup_combined():
-    """Remove all files in the combined results directory"""
-    if os.path.exists(COMBINED_DIR):
-        shutil.rmtree(COMBINED_DIR)
-        os.makedirs(COMBINED_DIR)
-
 def main():
     # Clean up combined results before starting
     cleanup_combined()
