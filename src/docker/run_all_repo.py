@@ -21,13 +21,24 @@ def main(repo_url):
     output_file_name = "results.json"
     output_file = os.path.join(results_dir, output_file_name)
 
+    # Check if results already exist for this repo
+    results_dir = "./results"
+    combined_dir = os.path.join(results_dir, "combined")
+    repo_name = repo_url.split('/')[-1]
+    
+    if os.path.exists(combined_dir):
+        existing_files = [f for f in os.listdir(combined_dir) if f.startswith(repo_name)]
+        if existing_files:
+            logging.info(f"Results already exist for {repo_name}")
+            return
+
     # Cleanup before starting
     try:
         cleanup(clone_dir)
-
     except Exception as e:
         logging.error(f"Initial cleanup failed: {e}")
         sys.exit(1)
+
     try:
         # Clone the repository
         clone_repo(repo_url, clone_dir)
