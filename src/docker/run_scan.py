@@ -13,6 +13,14 @@ setup_logging()
 
 def run_semgrep(clone_dir, output_file_name):
     results_dir = "./results"
+    combined_dir = os.path.join(results_dir, "combined")
+    combined_file_path = os.path.join(combined_dir, output_file_name)
+
+    # Check if combined results already exist
+    if os.path.exists(combined_file_path):
+        logging.info(f"Results already exist for {output_file_name}")
+        return
+
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
     """Run semgrep on the cloned repository using all YAML rules."""
