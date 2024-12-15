@@ -37,7 +37,17 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
     }
 
     # Process each result
+    if isinstance(combined_data, str):
+        combined_data = json.loads(combined_data)
+        
+    if not isinstance(combined_data, list):
+        combined_data = [combined_data]
+        
     for result in combined_data:
+        if not isinstance(result, dict):
+            logging.warning(f"Skipping invalid result format: {result}")
+            continue
+            
         rule_name = result.get('rulename', 'unknown')
         matches = result.get('matches', [])
         
