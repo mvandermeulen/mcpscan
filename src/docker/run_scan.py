@@ -14,12 +14,16 @@ setup_logging()
 def run_semgrep(clone_dir, output_file_name):
     results_dir = "./results"
     combined_dir = os.path.join(results_dir, "combined")
-    combined_file_path = os.path.join(combined_dir, output_file_name)
-
-    # Check if combined results already exist
-    if os.path.exists(combined_file_path):
-        logging.info(f"Results already exist for {output_file_name}")
-        return
+    
+    # Extract server name without timestamp
+    server_name = output_file_name.split('_')[0] if '_' in output_file_name else output_file_name
+    
+    # Check if any combined results exist for this server
+    if os.path.exists(combined_dir):
+        existing_files = [f for f in os.listdir(combined_dir) if f.startswith(server_name)]
+        if existing_files:
+            logging.info(f"Results already exist for {server_name}")
+            return
 
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
