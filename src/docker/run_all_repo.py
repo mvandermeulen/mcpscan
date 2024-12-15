@@ -16,14 +16,12 @@ from combine_results import combine_results
 from package_scan import scan as package_scan
 
 def main(repo_url):
-    clone_dir = "./working"
-    results_dir = "./results"
+    from config import WORKING_DIR, RESULTS_DIR, COMBINED_DIR
+    
     output_file_name = "results.json"
-    output_file = os.path.join(results_dir, output_file_name)
+    output_file = os.path.join(RESULTS_DIR, output_file_name)
 
     # Check if results already exist for this repo
-    results_dir = "./results"
-    combined_dir = os.path.join(results_dir, "combined")
     repo_name = repo_url.split('/')[-1]
     
     if os.path.exists(combined_dir):

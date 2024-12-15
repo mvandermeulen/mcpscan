@@ -12,19 +12,16 @@ from log_config import setup_logging
 setup_logging()
 
 def run_semgrep(clone_dir, output_file_name):
-    results_dir = "./results"
-    if not os.path.exists(results_dir):
-        os.makedirs(results_dir)
+    from config import RESULTS_DIR, RULES_DIR
     """Run semgrep on the cloned repository using all YAML rules."""
-    rules_dir = "semgrep_rules"
     errors = []
     
     # Get all YAML files from the rules directory
-    rule_files = [os.path.join(rules_dir, f) for f in os.listdir(rules_dir) 
+    rule_files = [os.path.join(RULES_DIR, f) for f in os.listdir(RULES_DIR) 
                  if f.endswith('.yml') or f.endswith('.yaml')]
     
     for rule_file in rule_files:
-        output_file = os.path.join(results_dir, f"{os.path.basename(rule_file).replace('.yml', '')}_{output_file_name}")
+        output_file = os.path.join(RESULTS_DIR, f"{os.path.basename(rule_file).replace('.yml', '')}_{output_file_name}")
         try:
             subprocess.run([
                 "semgrep", 

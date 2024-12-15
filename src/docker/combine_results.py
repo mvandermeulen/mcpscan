@@ -35,12 +35,7 @@ def combine_results(results_dir, combined_file):
         except Exception as e:
             logging.error(f"Unexpected error processing {filename}: {str(e)}")
     
-    combined_dir = f"{results_dir}/combined"
-    if not os.path.exists(combined_dir):
-        logging.info(f"Creating combined results directory: {combined_dir}")
-        os.mkdir(combined_dir)
-    
-    output_path = f"{combined_dir}/{combined_file}"
+    output_path = os.path.join(COMBINED_DIR, combined_file)
     logging.info(f"Writing combined results to {output_path}")
     try:
         with open(output_path, 'w') as f:
