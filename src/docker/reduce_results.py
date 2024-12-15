@@ -85,26 +85,9 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
                 if rule_name == 'package_scan':
                     logging.debug("Processing package scan result")
                     try:
-                        vulnerabilities = result.get('vulnerabilities', {})
                         metadata = result.get('metadata', {}).get('vulnerabilities', {})
                         
-                        # Process vulnerabilities
-                        for package_name, vuln_data in vulnerabilities.items():
-                            simplified_match = {
-                                'rule': rule_name,
-                                'package': package_name,
-                                'severity': vuln_data.get('severity', ''),
-                                'is_direct': vuln_data.get('isDirect', False),
-                                'via': vuln_data.get('via', []),
-                                'effects': vuln_data.get('effects', []),
-                                'version_range': vuln_data.get('range', ''),
-                                'nodes': vuln_data.get('nodes', []),
-                                'fix_available': vuln_data.get('fixAvailable', False),
-                                'type': 'vulnerability'
-                            }
-                            summary['all_matches'].append(simplified_match)
-                        
-                        # Add metadata summary
+                        # Only include vulnerability summary
                         summary['vulnerability_summary'] = {
                             'info': metadata.get('info', 0),
                             'low': metadata.get('low', 0),
