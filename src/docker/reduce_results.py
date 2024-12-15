@@ -57,7 +57,8 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
         
         # Handle package scan results differently
         if rule_name == 'package_scan':
-            vulnerabilities = result.get('metadata', {}).get('vulnerabilities', [])
+            print(result)
+            vulnerabilities = result.get('vulnerabilities', [])
             for vuln in vulnerabilities:
                 simplified_match = {
                     'rule': rule_name,
