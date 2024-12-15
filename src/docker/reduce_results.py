@@ -6,6 +6,7 @@ import json
 import logging
 import datetime
 import os
+from pathlib import Path
 from log_config import setup_logging
 from pathlib import Path
 
@@ -190,12 +191,11 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
                 }
                 summary['all_matches'].append(simplified_match)
 
-    # Create output directory if it doesn't exist
-    output_dir = Path(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+        # Create output directory if it doesn't exist
+        output_dir = Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Save results
-    try:
+        # Save results
         # Create output directory if it doesn't exist
         os.makedirs(output_dir, exist_ok=True)
         
