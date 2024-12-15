@@ -221,46 +221,12 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
         if error_count > 0:
             logging.warning(f"Encountered {error_count} errors during processing")
             
-        return summary
         
     except Exception as e:
         error_msg = f"Error saving reduced results: {str(e)}"
         logging.error(error_msg)
         raise
 
-    # Create human-readable report with server name and timestamp
-    txt_filename = f"{server_name}_{timestamp}_summary.txt"
-    txt_path = output_dir / txt_filename
-    with open(txt_path, 'w') as f:
-        f.write(f"Security Scan Summary\n{'='*20}\n\n")
-        f.write(f"Total Findings: {summary['total_findings']}\n\n")
-        
-        f.write("Findings by Rule:\n")
-        for rule, count in summary['findings_by_rule'].items():
-            f.write(f"- {rule}: {count} finding(s)\n")
-        
-        f.write("\nDetailed Findings:\n")
-        for match in summary['all_matches']:
-            f.write(f"\nRule: {match['rule']}\n")
-            if match['type'] == 'vulnerability':
-                f.write(f"Package: {match['package']}\n")
-                f.write(f"Severity: {match['severity']}\n")
-                f.write(f"Direct Dependency: {match['is_direct']}\n")
-                if match['via']:
-                    f.write(f"Via: {', '.join(match['via'])}\n")
-                if match['effects']:
-                    f.write(f"Effects: {', '.join(match['effects'])}\n")
-                f.write(f"Affected Versions: {match['version_range']}\n")
-                f.write(f"Locations: {', '.join(match['nodes'])}\n")
-                f.write(f"Fix Available: {match['fix_available']}\n")
-            else:
-                f.write(f"File: {match['path']} (line {match['line']})\n")
-                f.write(f"Finding: {match['message']}\n")
-                if match['snippet']:
-                    f.write(f"Code: {match['snippet']}\n")
-
-    logging.info(f"Reduced results saved to {output_dir}")
-    return summary
 
 if __name__ == "__main__":
     reduce_results("./results/combined/combined_results.json")
