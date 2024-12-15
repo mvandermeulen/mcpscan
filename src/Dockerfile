@@ -1,30 +1,35 @@
 # Use an official Python runtime as a parent image
 FROM node:latest
 
-# Set the working directory in the container
+# Set environment variables
+ENV VIRTUAL_ENV=/opt/venv \
+    PATH="/opt/venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3.11 \
+    python3-pip \
+    python-is-python3 \
+    python3.11-venv \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up Python virtual environment
+RUN python -m venv $VIRTUAL_ENV && \
+    pip install --no-cache-dir uv
+
+# Install Node.js dependencies
+RUN npm install -g npm-audit
+
+# Set the working directory
 WORKDIR /app
 
-# Copy the requirements.txt file into the container
-#COPY docker/requirements.txt /app/
+# Copy and install Python requirements first (for better caching)
+COPY docker/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt pip-audit
 
-# Copy the docker directory contents into the container
-COPY docker/ /app/
-
-RUN apt update && apt install -y python3.11 python3-pip python-is-python3 python3.11-venv
-
-
-
-ENV VIRTUAL_ENV=/opt/venv
-RUN python -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
-RUN pip install uv
-
-
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install pip-audit
-RUN npm install -g  npm-audit
+# Copy application code last (changes most frequently)
+COPY docker/ .
 
 # Run run_all.py when the container launches
 CMD ["python3", "run_all.py"]
