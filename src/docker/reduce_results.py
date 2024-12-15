@@ -210,7 +210,10 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
         txt_filename = f"{server_name}_{timestamp}_summary.txt"
         txt_path = os.path.join(output_dir, txt_filename)
         with open(txt_path, 'w') as f:
-            # ... (existing text report writing code) ...
+            f.write("Security Scan Summary Report\n")
+            f.write(f"Generated: {datetime.datetime.now()}\n\n")
+            f.write(f"Total Results Processed: {processed_count}\n")
+            f.write(f"Errors Encountered: {error_count}\n")
         logging.info(f"Saved text summary to {txt_path}")
         
         # Log completion statistics
