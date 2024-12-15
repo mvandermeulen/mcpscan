@@ -7,6 +7,7 @@ import json
 import logging
 from datetime import datetime
 from log_config import setup_logging
+from config import COMBINED_DIR
 
 setup_logging()
 

@@ -24,34 +24,34 @@ def main(repo_url):
     # Check if results already exist for this repo
     repo_name = repo_url.split('/')[-1]
     
-    if os.path.exists(combined_dir):
-        existing_files = [f for f in os.listdir(combined_dir) if f.startswith(repo_name)]
+    if os.path.exists(COMBINED_DIR):
+        existing_files = [f for f in os.listdir(COMBINED_DIR) if f.startswith(repo_name)]
         if existing_files:
             logging.info(f"Results already exist for {repo_name}")
             return
 
     # Cleanup before starting
     try:
-        cleanup(clone_dir)
+        cleanup(WORKING_DIR)
     except Exception as e:
         logging.error(f"Initial cleanup failed: {e}")
         sys.exit(1)
 
     try:
         # Clone the repository
-        clone_repo(repo_url, clone_dir)
+        clone_repo(repo_url, WORKING_DIR)
 
         # Run semgrep and package scanning
         logging.info("Running scans...")
-        run_semgrep(clone_dir, output_file_name)
+        run_semgrep(WORKING_DIR, output_file_name)
         logging.info("Running package scans...")
-        package_scan(clone_dir, results_dir)
+        package_scan(WORKING_DIR, RESULTS_DIR)
         
         # Combine results
         repo_name = repo_url.split('/')[-1]
         timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         logging.info("Combining results...")
-        combine_results(results_dir, f"{repo_name}_{timestamp}.json")
+        combine_results(RESULTS_DIR, f"{repo_name}_{timestamp}.json")
 
     except Exception as e:
         logging.error(f"An error occurred: {e}")
@@ -60,7 +60,7 @@ def main(repo_url):
     finally:
         # Cleanup
         try:
-            cleanup(clone_dir)
+            cleanup(WORKING_DIR)
         except Exception as e:
             logging.error(f"Cleanup failed: {e}")
 
