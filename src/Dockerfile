@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy the requirements.txt file into the container
 #COPY docker/requirements.txt /app/
 
-# Copy the src directory contents into the container at /app/src
-COPY docker/ /app
+# Copy the docker directory contents into the container
+COPY docker/ /app/
 
 RUN apt update && apt install -y python3.11 python3-pip python-is-python3 python3.11-venv
 
