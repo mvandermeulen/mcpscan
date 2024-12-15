@@ -4,6 +4,8 @@
 
 import json
 import logging
+import datetime
+import os
 from log_config import setup_logging
 from pathlib import Path
 
@@ -14,6 +16,11 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
     Reduce combined results into a simplified format focusing on key findings.
     """
     logging.info(f"Reading combined results from {combined_file_path}")
+    
+    # Extract server name from combined file path
+    combined_filename = os.path.basename(combined_file_path)
+    server_name = combined_filename.split('_')[0]
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     
     try:
         with open(combined_file_path, 'r') as f:
@@ -68,13 +75,15 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Save JSON summary
-    json_path = output_dir / 'reduced_results.json'
+    # Save JSON summary with server name and timestamp
+    json_filename = f"{server_name}_{timestamp}_reduced.json"
+    json_path = output_dir / json_filename
     with open(json_path, 'w') as f:
         json.dump(summary, f, indent=2)
 
-    # Create human-readable report
-    txt_path = output_dir / 'summary_report.txt'
+    # Create human-readable report with server name and timestamp
+    txt_filename = f"{server_name}_{timestamp}_summary.txt"
+    txt_path = output_dir / txt_filename
     with open(txt_path, 'w') as f:
         f.write(f"Security Scan Summary\n{'='*20}\n\n")
         f.write(f"Total Findings: {summary['total_findings']}\n\n")
