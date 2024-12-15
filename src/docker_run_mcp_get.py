@@ -5,8 +5,19 @@
 import json
 import requests
 import subprocess
+import os
+import shutil
+
+def cleanup_combined():
+    """Remove all files in the combined results directory"""
+    combined_dir = "./results/combined"
+    if os.path.exists(combined_dir):
+        shutil.rmtree(combined_dir)
+        os.makedirs(combined_dir)
 
 def main():
+    # Clean up combined results before starting
+    cleanup_combined()
     url = "https://raw.githubusercontent.com/michaellatman/mcp-get/refs/heads/main/packages/package-list.json"
     try:
         response = requests.get(url)
