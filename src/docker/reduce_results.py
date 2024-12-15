@@ -86,6 +86,7 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
                     logging.debug("Processing package scan result")
                     try:
                         metadata = result.get('metadata', {}).get('vulnerabilities', {})
+                        vulnerabilities = result.get('vulnerabilities', {})
                         
                         # Add vulnerability counts to findings_by_rule
                         summary['findings_by_rule']['dependencies_scan'] = {
@@ -96,6 +97,22 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
                             'critical': metadata.get('critical', 0),
                             'total': metadata.get('total', 0)
                         }
+                        
+                        # Add detailed findings to all_matches
+                        for package_name, vuln_data in vulnerabilities.items():
+                            simplified_match = {
+                                'rule': 'dependencies_scan',
+                                'package': package_name,
+                                'severity': vuln_data.get('severity', ''),
+                                'is_direct': vuln_data.get('isDirect', False),
+                                'via': vuln_data.get('via', []),
+                                'effects': vuln_data.get('effects', []),
+                                'version_range': vuln_data.get('range', ''),
+                                'nodes': vuln_data.get('nodes', []),
+                                'fix_available': vuln_data.get('fixAvailable', False),
+                                'type': 'vulnerability'
+                            }
+                            summary['all_matches'].append(simplified_match)
                         
                         # Add to total findings
                         summary['total_findings'] += metadata.get('total', 0)
