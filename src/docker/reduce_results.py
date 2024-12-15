@@ -87,8 +87,8 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
                     try:
                         metadata = result.get('metadata', {}).get('vulnerabilities', {})
                         
-                        # Only include vulnerability summary
-                        summary['vulnerability_summary'] = {
+                        # Add vulnerability counts to findings_by_rule
+                        summary['findings_by_rule']['dependencies_scan'] = {
                             'info': metadata.get('info', 0),
                             'low': metadata.get('low', 0),
                             'moderate': metadata.get('moderate', 0),
@@ -96,6 +96,9 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
                             'critical': metadata.get('critical', 0),
                             'total': metadata.get('total', 0)
                         }
+                        
+                        # Add to total findings
+                        summary['total_findings'] += metadata.get('total', 0)
                     except Exception as e:
                         logging.error(f"Error processing package scan result: {str(e)}")
                         error_count += 1
@@ -151,9 +154,9 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
                 }
                 summary['all_matches'].append(simplified_match)
             
-            # Add metadata summary
+            # Add vulnerability counts to findings_by_rule
             metadata = result.get('metadata', {}).get('vulnerabilities', {})
-            summary['vulnerability_summary'] = {
+            summary['findings_by_rule']['dependencies_scan'] = {
                 'info': metadata.get('info', 0),
                 'low': metadata.get('low', 0),
                 'moderate': metadata.get('moderate', 0),
@@ -161,6 +164,9 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
                 'critical': metadata.get('critical', 0),
                 'total': metadata.get('total', 0)
             }
+            
+            # Add to total findings
+            summary['total_findings'] += metadata.get('total', 0)
         else:
             # Extract essential information from regular matches
             for match in matches:
