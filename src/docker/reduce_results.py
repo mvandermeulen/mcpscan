@@ -38,16 +38,31 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
         summary['findings_by_rule'][rule_name] = len(matches)
         summary['total_findings'] += len(matches)
         
-        # Extract essential information from matches
-        for match in matches:
-            simplified_match = {
-                'rule': rule_name,
-                'path': match.get('path', ''),
-                'line': match.get('start', {}).get('line', 0),
-                'snippet': match.get('extra', {}).get('lines', ''),
-                'message': match.get('extra', {}).get('message', '')
-            }
-            summary['all_matches'].append(simplified_match)
+        # Handle package scan results differently
+        if rule_name == 'package_scan':
+            vulnerabilities = result.get('metadata', {}).get('vulnerabilities', [])
+            for vuln in vulnerabilities:
+                simplified_match = {
+                    'rule': rule_name,
+                    'package': vuln.get('package', ''),
+                    'vulnerability': vuln.get('vulnerability', ''),
+                    'severity': vuln.get('severity', ''),
+                    'fixed_version': vuln.get('fixed_version', ''),
+                    'type': 'vulnerability'
+                }
+                summary['all_matches'].append(simplified_match)
+        else:
+            # Extract essential information from regular matches
+            for match in matches:
+                simplified_match = {
+                    'rule': rule_name,
+                    'path': match.get('path', ''),
+                    'line': match.get('start', {}).get('line', 0),
+                    'snippet': match.get('extra', {}).get('lines', ''),
+                    'message': match.get('extra', {}).get('message', ''),
+                    'type': 'finding'
+                }
+                summary['all_matches'].append(simplified_match)
 
     # Create output directory if it doesn't exist
     output_dir = Path(output_dir)
@@ -71,10 +86,17 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
         f.write("\nDetailed Findings:\n")
         for match in summary['all_matches']:
             f.write(f"\nRule: {match['rule']}\n")
-            f.write(f"File: {match['path']} (line {match['line']})\n")
-            f.write(f"Finding: {match['message']}\n")
-            if match['snippet']:
-                f.write(f"Code: {match['snippet']}\n")
+            if match['type'] == 'vulnerability':
+                f.write(f"Package: {match['package']}\n")
+                f.write(f"Vulnerability: {match['vulnerability']}\n")
+                f.write(f"Severity: {match['severity']}\n")
+                if match['fixed_version']:
+                    f.write(f"Fixed in version: {match['fixed_version']}\n")
+            else:
+                f.write(f"File: {match['path']} (line {match['line']})\n")
+                f.write(f"Finding: {match['message']}\n")
+                if match['snippet']:
+                    f.write(f"Code: {match['snippet']}\n")
 
     logging.info(f"Reduced results saved to {output_dir}")
     return summary
