@@ -57,18 +57,32 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
         
         # Handle package scan results differently
         if rule_name == 'package_scan':
-            print(result)
-            vulnerabilities = result.get('vulnerabilities', [])
-            for vuln in vulnerabilities:
+            vulnerabilities = result.get('vulnerabilities', {})
+            for package_name, vuln_data in vulnerabilities.items():
                 simplified_match = {
                     'rule': rule_name,
-                    'package': vuln.get('package', ''),
-                    'vulnerability': vuln.get('vulnerability', ''),
-                    'severity': vuln.get('severity', ''),
-                    'fixed_version': vuln.get('fixed_version', ''),
+                    'package': package_name,
+                    'severity': vuln_data.get('severity', ''),
+                    'is_direct': vuln_data.get('isDirect', False),
+                    'via': vuln_data.get('via', []),
+                    'effects': vuln_data.get('effects', []),
+                    'version_range': vuln_data.get('range', ''),
+                    'nodes': vuln_data.get('nodes', []),
+                    'fix_available': vuln_data.get('fixAvailable', False),
                     'type': 'vulnerability'
                 }
                 summary['all_matches'].append(simplified_match)
+            
+            # Add metadata summary
+            metadata = result.get('metadata', {}).get('vulnerabilities', {})
+            summary['vulnerability_summary'] = {
+                'info': metadata.get('info', 0),
+                'low': metadata.get('low', 0),
+                'moderate': metadata.get('moderate', 0),
+                'high': metadata.get('high', 0),
+                'critical': metadata.get('critical', 0),
+                'total': metadata.get('total', 0)
+            }
         else:
             # Extract essential information from regular matches
             for match in matches:
@@ -108,10 +122,15 @@ def reduce_results(combined_file_path, output_dir="./results/reduced"):
             f.write(f"\nRule: {match['rule']}\n")
             if match['type'] == 'vulnerability':
                 f.write(f"Package: {match['package']}\n")
-                f.write(f"Vulnerability: {match['vulnerability']}\n")
                 f.write(f"Severity: {match['severity']}\n")
-                if match['fixed_version']:
-                    f.write(f"Fixed in version: {match['fixed_version']}\n")
+                f.write(f"Direct Dependency: {match['is_direct']}\n")
+                if match['via']:
+                    f.write(f"Via: {', '.join(match['via'])}\n")
+                if match['effects']:
+                    f.write(f"Effects: {', '.join(match['effects'])}\n")
+                f.write(f"Affected Versions: {match['version_range']}\n")
+                f.write(f"Locations: {', '.join(match['nodes'])}\n")
+                f.write(f"Fix Available: {match['fix_available']}\n")
             else:
                 f.write(f"File: {match['path']} (line {match['line']})\n")
                 f.write(f"Finding: {match['message']}\n")
