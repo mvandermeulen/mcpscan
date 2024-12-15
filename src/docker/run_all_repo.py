@@ -14,6 +14,7 @@ from repo import clone_repo
 from run_scan import run_semgrep
 from combine_results import combine_results
 from package_scan import scan as package_scan
+from reduce_results import reduce_results
 
 def main(repo_url):
     from config import WORKING_DIR, RESULTS_DIR, COMBINED_DIR
@@ -50,8 +51,14 @@ def main(repo_url):
         # Combine results
         repo_name = repo_url.split('/')[-1]
         timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        combined_filename = f"{repo_name}_{timestamp}.json"
         logging.info("Combining results...")
-        combine_results(RESULTS_DIR, f"{repo_name}_{timestamp}.json")
+        combine_results(RESULTS_DIR, combined_filename)
+        
+        # Reduce results
+        logging.info("Reducing results...")
+        combined_file_path = os.path.join(COMBINED_DIR, combined_filename)
+        reduce_results(combined_file_path)
 
     except Exception as e:
         logging.error(f"An error occurred: {e}")
