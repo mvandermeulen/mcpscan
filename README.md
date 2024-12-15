@@ -65,10 +65,23 @@ This will:
 
 ## Output
 
-Scan results are saved in the `results` directory with:
-- Semgrep analysis results
-- Package vulnerability scan results (pip-audit/npm audit)
-- Results are in JSON format for easy parsing
+Results are processed through multiple stages:
+1. Individual scan results are saved to the `results` directory:
+   - Semgrep analysis results
+   - Package vulnerability scans (pip-audit/npm audit)
+2. Results are combined into a single JSON file in `results/combined`
+3. Final reduced results in `results/reduced`:
+   - JSON summary with findings by rule
+   - Detailed vulnerability information
+   - Human-readable text report
+   - Simplified format for easy parsing
+
+The reduced results include:
+- Total findings count
+- Findings categorized by rule type
+- Dependencies scan summary with vulnerability counts
+- Detailed vulnerability information for each package
+- Code analysis findings with file locations and snippets
 
 ## Project Structure
 
@@ -106,9 +119,22 @@ This project is licensed under the Mozilla Public License Version 2.0. See the [
 
 [Add contribution guidelines here]
 
+## Output Structure
+
+Scan results are organized in three stages:
+1. Individual scan results in `results/`
+2. Combined results in `results/combined/`
+3. Reduced results in `results/reduced/` containing:
+   - Summary of findings by rule type
+   - Detailed vulnerability information
+   - Simplified findings format
+   - Human-readable text report
+
 ## TODO
 
-- [ ] Reduce the output jsons to a single representation
+- [x] Reduce the output jsons to a single representation
 - [ ] Add support for go
-- [ ] Add result caching, store last tested hash for a repo
+- [x] Add result caching, store last tested hash for a repo
 - [ ] More tests and scans
+- [ ] Add severity scoring system
+- [ ] Implement parallel scanning for multiple repositories
