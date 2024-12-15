@@ -12,7 +12,6 @@ from docker.config import COMBINED_DIR
 
 def main():
     # Clean up combined results before starting
-    cleanup_combined()
     url = "https://raw.githubusercontent.com/michaellatman/mcp-get/refs/heads/main/packages/package-list.json"
     try:
         response = requests.get(url)
