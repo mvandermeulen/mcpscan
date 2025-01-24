@@ -1,5 +1,9 @@
 # MCPScan
 
+This repository is archived. I started this as an experiment to work with Aider, but did not make enough progress to make it useful.
+It will currently clone a repo in a docker container, then run semgrep rules and dependancy scans. I did not do enough
+testing or output formatting to rely on this, but it may be a good starting point for someone else.
+
 A specialized security scanning tool for Model Context Protocol (MCP) servers. MCPScan performs comprehensive security analysis of MCP server implementations using multiple scanning tools:
 - Semgrep for code pattern analysis
 - npm audit for JavaScript/Node.js dependencies
